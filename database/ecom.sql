@@ -1,32 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 5.0.4
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Dec 13, 2020 at 06:29 PM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 8.0.0
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `ecom`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admin_users`
---
-
+create schema ecom;
+use ecom;
 CREATE TABLE `admin_users` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -101,6 +74,42 @@ INSERT INTO `coupon_master` (`id`, `coupon_code`, `coupon_value`, `coupon_type`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL,
+  `FirstName` varchar(26) DEFAULT NULL,
+  `LastName` varchar(50) DEFAULT NULL,
+  `Email` varchar(50) DEFAULT NULL,
+  `Phone` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`id`, `FirstName`, `LastName`, `Email`, `Phone`) VALUES
+(1, 'Ahmed', 'Shettima', 'Ahemd@gmail.com', '0111');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plastic`
+--
+
+CREATE TABLE `plastic` (
+  `id` int(11) NOT NULL,
+  `plasticname` varchar(25) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `image` varchar(50) DEFAULT NULL,
+  `date_created` date DEFAULT current_timestamp(),
+  `vendor_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subcategories`
 --
 
@@ -126,16 +135,23 @@ INSERT INTO `subcategories` (`id`, `categories`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_member`
+-- Table structure for table `vendor`
 --
 
-CREATE TABLE `tbl_member` (
+CREATE TABLE `vendor` (
   `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `create_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `name` varchar(26) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vendor`
+--
+
+INSERT INTO `vendor` (`id`, `name`, `password`, `email`, `phone`) VALUES
+(1, 'bigdaddy', '1', 'bigdaddy2030@gmail.com', '090');
 
 --
 -- Indexes for dumped tables
@@ -160,15 +176,28 @@ ALTER TABLE `coupon_master`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `plastic`
+--
+ALTER TABLE `plastic`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `vendor_id` (`vendor_id`);
+
+--
 -- Indexes for table `subcategories`
 --
 ALTER TABLE `subcategories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tbl_member`
+-- Indexes for table `vendor`
 --
-ALTER TABLE `tbl_member`
+ALTER TABLE `vendor`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -179,7 +208,7 @@ ALTER TABLE `tbl_member`
 -- AUTO_INCREMENT for table `admin_users`
 --
 ALTER TABLE `admin_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `contact_us`
@@ -194,16 +223,38 @@ ALTER TABLE `coupon_master`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `plastic`
+--
+ALTER TABLE `plastic`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `subcategories`
 --
 ALTER TABLE `subcategories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `tbl_member`
+-- AUTO_INCREMENT for table `vendor`
 --
-ALTER TABLE `tbl_member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `vendor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `plastic`
+--
+ALTER TABLE `plastic`
+  ADD CONSTRAINT `plastic_ibfk_1` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
